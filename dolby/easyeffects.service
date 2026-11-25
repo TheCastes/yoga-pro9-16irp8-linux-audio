@@ -1,0 +1,13 @@
+[Unit]
+Description=EasyEffects in the background (Dolby speaker presets)
+PartOf=graphical-session.target
+After=graphical-session.target pipewire.service wireplumber.service
+
+[Service]
+ExecStart=/usr/bin/easyeffects -w
+ExecStop=/usr/bin/easyeffects -q
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=graphical-session.target
