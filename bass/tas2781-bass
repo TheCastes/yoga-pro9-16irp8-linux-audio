@@ -1,0 +1,22 @@
+#!/bin/sh
+CONTROL="iface=CARD,name=Speaker Force Firmware Load"
+
+set_control() {
+    i=0
+    while [ $i -lt 30 ]; do
+        amixer -q -c sofhdadsp cset "$CONTROL" "$1" && return 0
+        i=$((i + 1))
+        sleep 1
+    done
+    return 1
+}
+
+set_control off || exit 1
+i=0
+while [ $i -lt 600 ]; do
+    pw-dump 2>/dev/null | grep -q 'HiFi__Speaker__sink"' && break
+    i=$((i + 1))
+    sleep 0.1
+done
+sleep 2
+set_control on
